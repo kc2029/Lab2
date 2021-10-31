@@ -35,9 +35,7 @@ function setspeed(e) {
   // get the speed and store it - notice, it has the 'this' keyword
   // so it's stored in your class
   // you should check for valid values as well
-  this.bearSpeed = document.getElementById("speedBear").value;
-
-  console.log("bearSpeed :", this.bearSpeed);
+  let bearSpeed = document.getElementById("speedBear").value;
 }
 
 function Bear() {
