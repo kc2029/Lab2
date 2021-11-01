@@ -2,12 +2,14 @@ function start() {
   //create bear
   bear = new Bear();
   document.addEventListener("keydown", moveBear, false);
-  document.getElementById("speedBear").addEventListener("input", setspeed);
+  document.getElementById("nbBees").addEventListener("input", makeBees);
+
   //create new array for bees
   bees = new Array();
-  //create bees
+
   makeBees();
   updateBees();
+  lastStingTime = new Date();
 }
 // Handle keyboad events
 // to move the bear
@@ -29,13 +31,6 @@ function moveBear(e) {
   if (e.keyCode == KEYDOWN) {
     bear.move(0, 1);
   } // down key
-}
-
-function setspeed(e) {
-  // get the speed and store it - notice, it has the 'this' keyword
-  // so it's stored in your class
-  // you should check for valid values as well
-  let bearSpeed = document.getElementById("speedBear").value;
 }
 
 function Bear() {
@@ -70,8 +65,13 @@ function Bear() {
     if (this.y > h - ih) this.y = h - ih;
   };
 
+  this.setSpeed = function () {
+    this.dBear = Number(document.getElementById("speedBear").value);
+  };
+
   this.move = function (xDir, yDir) {
-    this.fitBounds(); //we add this instruction to keep bear within board
+    this.fitBounds();
+    this.setSpeed();
     this.x += this.dBear * xDir;
     this.y += this.dBear * yDir;
     this.display();
@@ -186,7 +186,7 @@ function updateBees() {
   //move the bees randomly
   moveBees();
   //use a fixed update period
-  let period = "speed"; //modify this to control refresh period
+  let period = document.getElementById("periodTimer").value; //modify this to control refresh period
   //update the timer for the next move
   updateTimer = setTimeout("updateBees()", period);
 }
@@ -202,6 +202,18 @@ function isHit(defender, offender) {
     }
 
     hits.innerHTML = score; //display the new score
+
+    //calculate longest duration
+    let newStingTime = new Date();
+    let thisDuration = newStingTime - lastStingTime;
+    lastStingTime = newStingTime;
+    let longestDuration = Number(duration.innerHTML);
+    if (longestDuration === 0) {
+      longestDuration = thisDuration;
+    } else {
+      if (longestDuration < thisDuration) longestDuration = thisDuration;
+    }
+    document.getElementById("duration").innerHTML = longestDuration;
   }
 }
 
