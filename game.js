@@ -182,13 +182,16 @@ function moveBees() {
 }
 
 function updateBees() {
-  // update loop for game
-  //move the bees randomly
   moveBees();
-  //use a fixed update period
-  let period = document.getElementById("periodTimer").value; //modify this to control refresh period
-  //update the timer for the next move
+  let period = document.getElementById("periodTimer").value;
   updateTimer = setTimeout("updateBees()", period);
+
+  let score = hits.innerHTML;
+
+  if (score > 1000) {
+    hits.innerHTML = 0;
+    window.alert(" restart");
+  }
 }
 
 function isHit(defender, offender) {
@@ -196,10 +199,6 @@ function isHit(defender, offender) {
     //check if the two image overlap
     let score = hits.innerHTML;
     score = Number(score) + 1; //increment the score
-    if (score > 1000) {
-      score = 0;
-      window.alert("Bear Stung 1000 times, Bear is dead, restart");
-    }
 
     hits.innerHTML = score; //display the new score
 
